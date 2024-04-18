@@ -1,8 +1,10 @@
 // THIS FILE IS GENERATED AUTOMATICALLY. DO NOT MODIFY.
 
+import CrossdappGateway from './crossdapp.gateway'
 
 
 export default { 
+  CrossdappGateway: load(CrossdappGateway, 'crossdapp.gateway'),
   
 }
 

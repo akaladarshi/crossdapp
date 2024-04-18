@@ -1,6 +1,7 @@
 accounts:
   - name: alice
     coins: ["20000token", "200000000stake"]
+    mnemonic: cargo ramp supreme review change various throw air figure humble soft steel slam pole betray inhale already dentist enough away office apple sample glue
   - name: bob
     coins: ["10000token", "100000000stake"]
 validator:
@@ -9,8 +10,6 @@ validator:
 client:
   openapi:
     path: "docs/static/openapi.yml"
-  typescript:
-    path: "ts-client"
   vuex:
     path: "vue/src/store"
 faucet:

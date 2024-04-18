@@ -764,12 +764,12 @@ export const QueryEscrowAddressResponse = {
 
 /** Query provides defines the gRPC querier service. */
 export interface Query {
-  /** DenomTrace queries a denomination trace information. */
-  DenomTrace(request: QueryDenomTraceRequest): Promise<QueryDenomTraceResponse>;
   /** DenomTraces queries all denomination traces. */
   DenomTraces(
     request: QueryDenomTracesRequest
   ): Promise<QueryDenomTracesResponse>;
+  /** DenomTrace queries a denomination trace information. */
+  DenomTrace(request: QueryDenomTraceRequest): Promise<QueryDenomTraceResponse>;
   /** Params queries all parameters of the ibc-transfer module. */
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse>;
   /** DenomHash queries a denomination hash information. */
@@ -785,20 +785,6 @@ export class QueryClientImpl implements Query {
   constructor(rpc: Rpc) {
     this.rpc = rpc;
   }
-  DenomTrace(
-    request: QueryDenomTraceRequest
-  ): Promise<QueryDenomTraceResponse> {
-    const data = QueryDenomTraceRequest.encode(request).finish();
-    const promise = this.rpc.request(
-      "ibc.applications.transfer.v1.Query",
-      "DenomTrace",
-      data
-    );
-    return promise.then((data) =>
-      QueryDenomTraceResponse.decode(new Reader(data))
-    );
-  }
-
   DenomTraces(
     request: QueryDenomTracesRequest
   ): Promise<QueryDenomTracesResponse> {
@@ -810,6 +796,20 @@ export class QueryClientImpl implements Query {
     );
     return promise.then((data) =>
       QueryDenomTracesResponse.decode(new Reader(data))
+    );
+  }
+
+  DenomTrace(
+    request: QueryDenomTraceRequest
+  ): Promise<QueryDenomTraceResponse> {
+    const data = QueryDenomTraceRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "ibc.applications.transfer.v1.Query",
+      "DenomTrace",
+      data
+    );
+    return promise.then((data) =>
+      QueryDenomTraceResponse.decode(new Reader(data))
     );
   }
 

@@ -145,33 +145,9 @@ export interface V1Beta1Coin {
 }
 
 /**
-* MsgCreateVestingAccountResponse defines the Msg/CreatePeriodicVestingAccount
-response type.
-
-Since: cosmos-sdk 0.46
-*/
-export type V1Beta1MsgCreatePeriodicVestingAccountResponse = object;
-
-/**
-* MsgCreatePermanentLockedAccountResponse defines the Msg/CreatePermanentLockedAccount response type.
-
-Since: cosmos-sdk 0.46
-*/
-export type V1Beta1MsgCreatePermanentLockedAccountResponse = object;
-
-/**
  * MsgCreateVestingAccountResponse defines the Msg/CreateVestingAccount response type.
  */
 export type V1Beta1MsgCreateVestingAccountResponse = object;
-
-/**
- * Period defines a length of time and amount of coins that will vest.
- */
-export interface V1Beta1Period {
-  /** @format int64 */
-  length?: string;
-  amount?: V1Beta1Coin[];
-}
 
 export type QueryParamsType = Record<string | number, any>;
 export type ResponseFormat = keyof Omit<Body, "body" | "bodyUsed">;

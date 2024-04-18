@@ -1,0 +1,14 @@
+syntax = "proto3";
+package crossdapp.gateway;
+
+import "gogoproto/gogo.proto";
+import "gateway/params.proto";
+// this line is used by starport scaffolding # genesis/proto/import
+
+option go_package = "github.com/akaladarshi/crossdapp/x/gateway/types";
+
+// GenesisState defines the gateway module's genesis state.
+message GenesisState {
+  Params params = 1 [(gogoproto.nullable) = false];
+  // this line is used by starport scaffolding # genesis/proto/state
+}

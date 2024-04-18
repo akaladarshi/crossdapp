@@ -228,6 +228,9 @@ export interface RpcStatus {
   details?: ProtobufAny[];
 }
 
+/**
+ * Since: cosmos-sdk 0.45.2
+ */
 export interface V1Beta1GrantAuthorization {
   granter?: string;
   grantee?: string;
@@ -395,12 +398,7 @@ corresponding request message has used PageRequest.
  }
 */
 export interface V1Beta1PageResponse {
-  /**
-   * next_key is the key to be passed to PageRequest.key to
-   * query the next page most efficiently. It will be empty if
-   * there are no more results.
-   * @format byte
-   */
+  /** @format byte */
   next_key?: string;
 
   /** @format uint64 */
@@ -666,7 +664,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     });
 
   /**
-   * @description Since: cosmos-sdk 0.46
+   * @description Since: cosmos-sdk 0.45.2
    *
    * @tags Query
    * @name QueryGranteeGrants
@@ -693,7 +691,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     });
 
   /**
-   * @description Since: cosmos-sdk 0.46
+   * @description Since: cosmos-sdk 0.45.2
    *
    * @tags Query
    * @name QueryGranterGrants

@@ -154,34 +154,6 @@ export interface RpcStatus {
 }
 
 /**
-* AddressBytesToStringResponse is the response type for AddressString rpc method.
-
-Since: cosmos-sdk 0.46
-*/
-export interface V1Beta1AddressBytesToStringResponse {
-  address_string?: string;
-}
-
-/**
-* AddressStringToBytesResponse is the response type for AddressBytes rpc method.
-
-Since: cosmos-sdk 0.46
-*/
-export interface V1Beta1AddressStringToBytesResponse {
-  /** @format byte */
-  address_bytes?: string;
-}
-
-/**
-* Bech32PrefixResponse is the response type for Bech32Prefix rpc method.
-
-Since: cosmos-sdk 0.46
-*/
-export interface V1Beta1Bech32PrefixResponse {
-  bech32_prefix?: string;
-}
-
-/**
 * message SomeRequest {
          Foo some_parameter = 1;
          PageRequest pagination = 2;
@@ -237,20 +209,11 @@ corresponding request message has used PageRequest.
  }
 */
 export interface V1Beta1PageResponse {
-  /**
-   * next_key is the key to be passed to PageRequest.key to
-   * query the next page most efficiently. It will be empty if
-   * there are no more results.
-   * @format byte
-   */
+  /** @format byte */
   next_key?: string;
 
   /** @format uint64 */
   total?: string;
-}
-
-export interface V1Beta1QueryAccountAddressByIDResponse {
-  account_address?: string;
 }
 
 /**
@@ -274,12 +237,94 @@ export interface V1Beta1QueryAccountsResponse {
 }
 
 /**
-* QueryModuleAccountsResponse is the response type for the Query/ModuleAccounts RPC method.
-
-Since: cosmos-sdk 0.46
-*/
-export interface V1Beta1QueryModuleAccountsResponse {
-  accounts?: ProtobufAny[];
+ * QueryModuleAccountByNameResponse is the response type for the Query/ModuleAccountByName RPC method.
+ */
+export interface V1Beta1QueryModuleAccountByNameResponse {
+  /**
+   * `Any` contains an arbitrary serialized protocol buffer message along with a
+   * URL that describes the type of the serialized message.
+   *
+   * Protobuf library provides support to pack/unpack Any values in the form
+   * of utility functions or additional generated methods of the Any type.
+   *
+   * Example 1: Pack and unpack a message in C++.
+   *
+   *     Foo foo = ...;
+   *     Any any;
+   *     any.PackFrom(foo);
+   *     ...
+   *     if (any.UnpackTo(&foo)) {
+   *       ...
+   *     }
+   *
+   * Example 2: Pack and unpack a message in Java.
+   *
+   *     Foo foo = ...;
+   *     Any any = Any.pack(foo);
+   *     ...
+   *     if (any.is(Foo.class)) {
+   *       foo = any.unpack(Foo.class);
+   *     }
+   *
+   *  Example 3: Pack and unpack a message in Python.
+   *
+   *     foo = Foo(...)
+   *     any = Any()
+   *     any.Pack(foo)
+   *     ...
+   *     if any.Is(Foo.DESCRIPTOR):
+   *       any.Unpack(foo)
+   *       ...
+   *
+   *  Example 4: Pack and unpack a message in Go
+   *
+   *      foo := &pb.Foo{...}
+   *      any, err := anypb.New(foo)
+   *      if err != nil {
+   *        ...
+   *      }
+   *      ...
+   *      foo := &pb.Foo{}
+   *      if err := any.UnmarshalTo(foo); err != nil {
+   *        ...
+   *      }
+   *
+   * The pack methods provided by protobuf library will by default use
+   * 'type.googleapis.com/full.type.name' as the type URL and the unpack
+   * methods only use the fully qualified type name after the last '/'
+   * in the type URL, for example "foo.bar.com/x/y.z" will yield type
+   * name "y.z".
+   *
+   *
+   * JSON
+   * ====
+   * The JSON representation of an `Any` value uses the regular
+   * representation of the deserialized, embedded message, with an
+   * additional field `@type` which contains the type URL. Example:
+   *
+   *     package google.profile;
+   *     message Person {
+   *       string first_name = 1;
+   *       string last_name = 2;
+   *     }
+   *
+   *     {
+   *       "@type": "type.googleapis.com/google.profile.Person",
+   *       "firstName": <string>,
+   *       "lastName": <string>
+   *     }
+   *
+   * If the embedded message type is well-known and has a custom JSON
+   * representation, that representation will be embedded adding a field
+   * `value` which holds the custom JSON in addition to the `@type`
+   * field. Example (for message [google.protobuf.Duration][]):
+   *
+   *     {
+   *       "@type": "type.googleapis.com/google.protobuf.Duration",
+   *       "value": "1.212s"
+   *     }
+   */
+  account?: ProtobufAny;
 }
 
 /**
@@ -532,77 +577,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
-   * @name QueryAccountAddressById
-   * @summary AccountAddressByID returns account address based on account id
-   * @request GET:/cosmos/auth/v1beta1/address_by_id/{id}
+   * @name QueryModuleAccountByName
+   * @summary ModuleAccountByName returns the module account info by module name
+   * @request GET:/cosmos/auth/v1beta1/module_accounts/{name}
    */
-  queryAccountAddressById = (id: string, params: RequestParams = {}) =>
-    this.request<V1Beta1QueryAccountAddressByIDResponse, RpcStatus>({
-      path: `/cosmos/auth/v1beta1/address_by_id/${id}`,
-      method: "GET",
-      format: "json",
-      ...params,
-    });
-
-  /**
-   * @description Since: cosmos-sdk 0.46
-   *
-   * @tags Query
-   * @name QueryBech32Prefix
-   * @summary Bech32Prefix queries bech32Prefix
-   * @request GET:/cosmos/auth/v1beta1/bech32
-   */
-  queryBech32Prefix = (params: RequestParams = {}) =>
-    this.request<V1Beta1Bech32PrefixResponse, RpcStatus>({
-      path: `/cosmos/auth/v1beta1/bech32`,
-      method: "GET",
-      format: "json",
-      ...params,
-    });
-
-  /**
-   * @description Since: cosmos-sdk 0.46
-   *
-   * @tags Query
-   * @name QueryAddressBytesToString
-   * @summary AddressBytesToString converts Account Address bytes to string
-   * @request GET:/cosmos/auth/v1beta1/bech32/{address_bytes}
-   */
-  queryAddressBytesToString = (address_bytes: string, params: RequestParams = {}) =>
-    this.request<V1Beta1AddressBytesToStringResponse, RpcStatus>({
-      path: `/cosmos/auth/v1beta1/bech32/${address_bytes}`,
-      method: "GET",
-      format: "json",
-      ...params,
-    });
-
-  /**
-   * @description Since: cosmos-sdk 0.46
-   *
-   * @tags Query
-   * @name QueryAddressStringToBytes
-   * @summary AddressStringToBytes converts Address string to bytes
-   * @request GET:/cosmos/auth/v1beta1/bech32/{address_string}
-   */
-  queryAddressStringToBytes = (address_string: string, params: RequestParams = {}) =>
-    this.request<V1Beta1AddressStringToBytesResponse, RpcStatus>({
-      path: `/cosmos/auth/v1beta1/bech32/${address_string}`,
-      method: "GET",
-      format: "json",
-      ...params,
-    });
-
-  /**
-   * @description Since: cosmos-sdk 0.46
-   *
-   * @tags Query
-   * @name QueryModuleAccounts
-   * @summary ModuleAccounts returns all the existing module accounts.
-   * @request GET:/cosmos/auth/v1beta1/module_accounts
-   */
-  queryModuleAccounts = (params: RequestParams = {}) =>
-    this.request<V1Beta1QueryModuleAccountsResponse, RpcStatus>({
-      path: `/cosmos/auth/v1beta1/module_accounts`,
+  queryModuleAccountByName = (name: string, params: RequestParams = {}) =>
+    this.request<V1Beta1QueryModuleAccountByNameResponse, RpcStatus>({
+      path: `/cosmos/auth/v1beta1/module_accounts/${name}`,
       method: "GET",
       format: "json",
       ...params,

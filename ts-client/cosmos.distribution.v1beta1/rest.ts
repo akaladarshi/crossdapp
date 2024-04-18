@@ -82,16 +82,12 @@ export type V1Beta1MsgSetWithdrawAddressResponse = object;
 /**
  * MsgWithdrawDelegatorRewardResponse defines the Msg/WithdrawDelegatorReward response type.
  */
-export interface V1Beta1MsgWithdrawDelegatorRewardResponse {
-  amount?: V1Beta1Coin[];
-}
+export type V1Beta1MsgWithdrawDelegatorRewardResponse = object;
 
 /**
  * MsgWithdrawValidatorCommissionResponse defines the Msg/WithdrawValidatorCommission response type.
  */
-export interface V1Beta1MsgWithdrawValidatorCommissionResponse {
-  amount?: V1Beta1Coin[];
-}
+export type V1Beta1MsgWithdrawValidatorCommissionResponse = object;
 
 /**
 * message SomeRequest {
@@ -149,12 +145,7 @@ corresponding request message has used PageRequest.
  }
 */
 export interface V1Beta1PageResponse {
-  /**
-   * next_key is the key to be passed to PageRequest.key to
-   * query the next page most efficiently. It will be empty if
-   * there are no more results.
-   * @format byte
-   */
+  /** @format byte */
   next_key?: string;
 
   /** @format uint64 */

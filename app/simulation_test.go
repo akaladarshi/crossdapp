@@ -5,7 +5,8 @@ import (
 	"testing"
 	"time"
 
-	"cross-dapp/app"
+	crossdapp "github.com/akaladarshi/crossdapp/app"
+	"github.com/akaladarshi/crossdapp/app/params"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/simapp"
@@ -13,7 +14,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simulationtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
-	"github.com/ignite/cli/ignite/pkg/cosmoscmd"
 	"github.com/stretchr/testify/require"
 	abci "github.com/tendermint/tendermint/abci/types"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
@@ -25,7 +25,7 @@ func init() {
 }
 
 type SimApp interface {
-	cosmoscmd.App
+	crossdapp.App
 	GetBaseApp() *baseapp.BaseApp
 	AppCodec() codec.Codec
 	SimulationManager() *module.SimulationManager
@@ -72,15 +72,15 @@ func BenchmarkSimulation(b *testing.B) {
 		require.NoError(b, err)
 	})
 
-	encoding := cosmoscmd.MakeEncodingConfig(app.ModuleBasics)
+	encoding := params.MakeEncodingConfig()
 
-	app := app.New(
+	app := crossdapp.New(
 		logger,
 		db,
 		nil,
 		true,
 		map[int64]bool{},
-		app.DefaultNodeHome,
+		crossdapp.DefaultNodeHome,
 		0,
 		encoding,
 		simapp.EmptyAppOptions{},

@@ -278,6 +278,12 @@ export interface ProofSpec {
   maxDepth: number;
   /** min_depth (if > 0) is the minimum number of InnerOps allowed (mainly for fixed-depth tries) */
   minDepth: number;
+  /**
+   * prehash_key_before_comparison is a flag that indicates whether to use the
+   * prehash_key specified by LeafOp to compare lexical ordering of keys for
+   * non-existence proofs.
+   */
+  prehashKeyBeforeComparison: boolean;
 }
 
 /**
@@ -905,7 +911,11 @@ export const InnerOp = {
   },
 };
 
-const baseProofSpec: object = { maxDepth: 0, minDepth: 0 };
+const baseProofSpec: object = {
+  maxDepth: 0,
+  minDepth: 0,
+  prehashKeyBeforeComparison: false,
+};
 
 export const ProofSpec = {
   encode(message: ProofSpec, writer: Writer = Writer.create()): Writer {
@@ -920,6 +930,9 @@ export const ProofSpec = {
     }
     if (message.minDepth !== 0) {
       writer.uint32(32).int32(message.minDepth);
+    }
+    if (message.prehashKeyBeforeComparison === true) {
+      writer.uint32(40).bool(message.prehashKeyBeforeComparison);
     }
     return writer;
   },
@@ -942,6 +955,9 @@ export const ProofSpec = {
           break;
         case 4:
           message.minDepth = reader.int32();
+          break;
+        case 5:
+          message.prehashKeyBeforeComparison = reader.bool();
           break;
         default:
           reader.skipType(tag & 7);
@@ -973,6 +989,16 @@ export const ProofSpec = {
     } else {
       message.minDepth = 0;
     }
+    if (
+      object.prehashKeyBeforeComparison !== undefined &&
+      object.prehashKeyBeforeComparison !== null
+    ) {
+      message.prehashKeyBeforeComparison = Boolean(
+        object.prehashKeyBeforeComparison
+      );
+    } else {
+      message.prehashKeyBeforeComparison = false;
+    }
     return message;
   },
 
@@ -988,6 +1014,8 @@ export const ProofSpec = {
         : undefined);
     message.maxDepth !== undefined && (obj.maxDepth = message.maxDepth);
     message.minDepth !== undefined && (obj.minDepth = message.minDepth);
+    message.prehashKeyBeforeComparison !== undefined &&
+      (obj.prehashKeyBeforeComparison = message.prehashKeyBeforeComparison);
     return obj;
   },
 
@@ -1012,6 +1040,14 @@ export const ProofSpec = {
       message.minDepth = object.minDepth;
     } else {
       message.minDepth = 0;
+    }
+    if (
+      object.prehashKeyBeforeComparison !== undefined &&
+      object.prehashKeyBeforeComparison !== null
+    ) {
+      message.prehashKeyBeforeComparison = object.prehashKeyBeforeComparison;
+    } else {
+      message.prehashKeyBeforeComparison = false;
     }
     return message;
   },

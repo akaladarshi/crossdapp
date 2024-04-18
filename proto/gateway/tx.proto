@@ -1,0 +1,29 @@
+syntax = "proto3";
+package crossdapp.gateway;
+
+// this line is used by starport scaffolding # proto/tx/import
+import "gogoproto/gogo.proto";
+import "gateway/types.proto";;
+
+option go_package = "github.com/akaladarshi/crossdapp/x/gateway/types";
+
+// Msg defines the Msg service.
+service Msg {
+    // this line is used by starport scaffolding # proto/tx/rpc
+  rpc SendIBCMsg(DepositRequest) returns (DepositResponse);
+}
+
+// this line is used by starport scaffolding # proto/tx/message
+
+message DepositRequest {
+  string creator = 1;
+  string port = 2;
+  string channelID = 3;
+  uint64 timeoutTimestamp = 4;
+  repeated Coin coins = 5 [(gogoproto.nullable) = false];
+  string memo = 6;
+  bytes signer = 7 [(gogoproto.casttype) = "github.com/cosmos/cosmos-sdk/types.AccAddress"];
+  string receiver = 8;
+}
+
+message DepositResponse {}

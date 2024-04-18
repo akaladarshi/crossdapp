@@ -1,0 +1,14 @@
+syntax = "proto3";
+package crossdapp.gateway;
+
+// this line is used by starport scaffolding # proto/tx/import
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/akaladarshi/crossdapp/x/gateway/types";
+
+message IBCMsgPacketData {
+  // Type is the type of the IBC message
+  string MsgType	= 1;
+  // Data is the data of the IBC message
+  bytes data	= 2;
+}
